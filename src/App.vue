@@ -21,7 +21,91 @@
           <v-list-group :value="false">
             <template v-slot:activator>
               <v-list-item-content>
-                  <v-list-item-title>Ejemplo</v-list-item-title>
+                  <v-list-item-title>Almacen</v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item :to="{ path: '/ejemplo'}">
+              <v-list-item-icon>
+                <v-icon>production_quantity_limits</v-icon>
+              </v-list-item-icon>
+            <v-list-item-title>Nuevo Ejemplo</v-list-item-title>              
+            </v-list-item>
+            <v-list-item :to="{ path: '/valor2'}">
+              <v-list-item-icon>
+                <v-icon>production_quantity_limits</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Nuevo Ejemplo</v-list-item-title>              
+            </v-list-item>            
+          </v-list-group>
+        </template>
+        <template>
+          <v-list-group :value="false">
+            <template v-slot:activator>
+              <v-list-item-content>
+                  <v-list-item-title>Compras</v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item :to="{ path: '/ejemplo'}">
+              <v-list-item-icon>
+                <v-icon>production_quantity_limits</v-icon>
+              </v-list-item-icon>
+            <v-list-item-title>Nuevo Ejemplo</v-list-item-title>              
+            </v-list-item>
+            <v-list-item :to="{ path: '/valor2'}">
+              <v-list-item-icon>
+                <v-icon>production_quantity_limits</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Nuevo Ejemplo</v-list-item-title>              
+            </v-list-item>            
+          </v-list-group>
+        </template>
+        <template>
+          <v-list-group :value="false">
+            <template v-slot:activator>
+              <v-list-item-content>
+                  <v-list-item-title>Ventas</v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item :to="{ path: '/ejemplo'}">
+              <v-list-item-icon>
+                <v-icon>production_quantity_limits</v-icon>
+              </v-list-item-icon>
+            <v-list-item-title>Nuevo Ejemplo</v-list-item-title>              
+            </v-list-item>
+            <v-list-item :to="{ path: '/valor2'}">
+              <v-list-item-icon>
+                <v-icon>production_quantity_limits</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Nuevo Ejemplo</v-list-item-title>              
+            </v-list-item>            
+          </v-list-group>
+        </template>
+        <template>
+          <v-list-group :value="false">
+            <template v-slot:activator>
+              <v-list-item-content>
+                  <v-list-item-title>Accesos</v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item :to="{ path: '/ejemplo'}">
+              <v-list-item-icon>
+                <v-icon>production_quantity_limits</v-icon>
+              </v-list-item-icon>
+            <v-list-item-title>Nuevo Ejemplo</v-list-item-title>              
+            </v-list-item>
+            <v-list-item :to="{ path: '/valor2'}">
+              <v-list-item-icon>
+                <v-icon>production_quantity_limits</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Nuevo Ejemplo</v-list-item-title>              
+            </v-list-item>            
+          </v-list-group>
+        </template>
+        <template>
+          <v-list-group :value="false">
+            <template v-slot:activator>
+              <v-list-item-content>
+                  <v-list-item-title>Consultas</v-list-item-title>
               </v-list-item-content>
             </template>
             <v-list-item :to="{ path: '/ejemplo'}">
