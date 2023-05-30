@@ -66,11 +66,11 @@
                   <v-list-item-title>Ventas</v-list-item-title>
               </v-list-item-content>
             </template>
-            <v-list-item :to="{ path: '/ejemplo'}">
+            <v-list-item :to="{ path: '/clientes'}">
               <v-list-item-icon>
                 <v-icon>production_quantity_limits</v-icon>
               </v-list-item-icon>
-            <v-list-item-title>Nuevo Ejemplo</v-list-item-title>              
+            <v-list-item-title>Clientes</v-list-item-title>              
             </v-list-item>
             <v-list-item :to="{ path: '/valor2'}">
               <v-list-item-icon>
@@ -139,7 +139,7 @@
         <v-icon>logout</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <v-container
         fluid
         fill-height
@@ -148,7 +148,7 @@
           <router-view/>
         </v-slide-y-transition>
       </v-container>
-    </v-content>
+    </v-main>
     <v-footer color="primary" padless>
       <v-row justify="center" no-gutters>
         <v-col
