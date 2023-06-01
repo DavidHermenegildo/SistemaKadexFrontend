@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Inicio from '../components/HelloWorld.vue'
 import Ejemplo from '../components/Ejemplo.vue'
 import Clientes from '../components/Clientes.vue'
+import Proveedores from '../components/Proveedores.vue'
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,11 @@ const routes = [
     path: '/clientes',
     name: 'clientes',
     component: Clientes
+  },
+  {
+    path: '/proveedores',
+    name: 'proveedores',
+    component: Proveedores
   },
   {
     path: '/about',
