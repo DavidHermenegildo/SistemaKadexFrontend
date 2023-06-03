@@ -5,6 +5,7 @@ import Inicio from '../components/HelloWorld.vue'
 import Ejemplo from '../components/Ejemplo.vue'
 import Clientes from '../components/Clientes.vue'
 import Producto from '../components/Producto.vue'
+import Proveedores from '../components/Proveedores.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
     path: '/producto',
     name: 'Producto',
     component: Producto
+  },
+  {
+    path: '/proveedores',
+    name: 'proveedores',
+    component: Proveedores
   },
   {
     path: '/about',

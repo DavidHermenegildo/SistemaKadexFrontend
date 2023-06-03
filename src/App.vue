@@ -51,11 +51,11 @@
               </v-list-item-icon>
             <v-list-item-title>Nuevo Ejemplo</v-list-item-title>              
             </v-list-item>
-            <v-list-item :to="{ path: '/valor2'}">
+            <v-list-item :to="{ path: '/proveedores'}">
               <v-list-item-icon>
-                <v-icon>production_quantity_limits</v-icon>
+                <v-icon>reduce_capacity</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>Nuevo Ejemplo</v-list-item-title>              
+              <v-list-item-title>Proveedores</v-list-item-title>              
             </v-list-item>            
           </v-list-group>
         </template>
