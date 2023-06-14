@@ -31,6 +31,10 @@
                                     </v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12>
+                                    <v-text-field v-model="cCodProducto" label="Código">                                        
+                                    </v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm12 md12>
                                     <v-text-field v-model="cDescripcion" label="Descripción">                                        
                                     </v-text-field>
                                 </v-flex>
@@ -140,6 +144,7 @@
                     { text: 'Producto',         value: 'cProducto',       sortable: true  },
                     { text: 'Precio',           value: 'cPrecioProd',     sortable: true  },
                     { text: 'Cantidad',         value: 'nCantidadProd',   sortable: false },
+                    { text: 'Código',           value: 'cCodProducto',    sortable: false },
                     { text: 'Descripción',      value: 'cDescripcion',    sortable: false },
                     { text: 'Estado',           value: 'lVigente',        sortable: false } 
                 ],
@@ -156,6 +161,7 @@
                 cProducto :      '',
                 nPrecio :        '',
                 nCantidad :      0,
+                cCodProducto:    '',
                 cDescripcion :   '',
                 lVigente:        ''
             }
@@ -189,6 +195,7 @@
                 this.cProducto =        '';
                 this.nPrecio =          '';
                 this.nCantidad =        '';
+                this.cCodProducto =     ''; 
                 this.cDescripcion =     '';
                 this.valida =           0;
                 this.validaMensaje =    [];
@@ -221,7 +228,8 @@
                         'idProducto'        : this.idProducto,
                         'cProducto'         : this.cProducto,
                         'cPrecioProd'       : this.nPrecio.toString(),
-                        'nCantidadProd'     : this.nCantidad,
+                        'nCantidadProd'     : parseInt(this.nCantidad),
+                        'cCodProducto'      : this.cCodProducto.toString(),
                         'cDescripcion'      : this.cDescripcion,
                         'lVigente'          : this.lVigente,
                     },configuracion)
@@ -240,6 +248,7 @@
                         'cProducto'         : this.cProducto,
                         'cPrecioProd'       : this.nPrecio.toString(),
                         'nCantidadProd'     : parseInt(this.nCantidad),
+                        'cCodProducto'      : this.cCodProducto.toString(),
                         'cDescripcion'      : this.cDescripcion,
                     },configuracion)
                     .then(function(response){
@@ -257,6 +266,7 @@
                 this.cProducto          = item.cProducto;
                 this.nPrecio            = item.cPrecioProd;
                 this.nCantidad          = item.nCantidadProd;
+                this.cCodProducto       = item.cCodProducto;
                 this.cDescripcion       = item.cDescripcion;
                 this.lVigente           = item.lVigente
                 this.dialog             = true;
