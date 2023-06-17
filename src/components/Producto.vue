@@ -7,6 +7,7 @@
                 <v-text-field class="text-xs-center" v-model="search" append-icon="search" 
                 label="Búsqueda" single-line hide-details></v-text-field>
                 <v-spacer></v-spacer>
+                <v-btn class="mb-2 mr-3" fab outlined small color="primary" @click="imprimirA4"><v-icon color="primary">print</v-icon></v-btn>
                 <v-dialog v-model="dialog" max-width="500px">
                     <template v-slot:activator="{ on }">
                         <v-btn color="primary" dark class="mb-2" v-on="on">Nuevo</v-btn>
@@ -132,7 +133,7 @@
 </template>
 <script>
     import axios from 'axios'
-
+    import jsPDF from 'jspdf'; 
     export default {
         data(){
             return{
@@ -163,7 +164,9 @@
                 nCantidad :      0,
                 cCodProducto:    '',
                 cDescripcion :   '',
-                lVigente:        ''
+                lVigente:        '',
+                nNumero:         0,
+                cResultado:      ''
             }
         },
         computed: {
@@ -322,6 +325,170 @@
             close () {
                 this.dialog = false;
                 this.limpiar();
+            },
+            imprimirA4(){
+                require('jspdf-autotable');
+                var opciones = {
+                    orientation: 'p',
+                    unit: 'mm',
+                    format: [210, 297]
+                };
+
+                var logo = 'https://thumbs.dreamstime.com/b/s%C3%ADmbolo-de-comercio-v%C3%ADas-flecha-con-dise%C3%B1os-logotipo-laptop-dise%C3%B1o-vectorial-comercial-maneras-online-venta-tienda-compra-171844391.jpg';
+                var doc = new jsPDF(opciones);
+                
+                doc.addImage(logo, 'JPG', 15, 15, 40, 40)
+
+                doc.setFont(undefined, 'bold');
+                doc.setFontSize(11);
+                doc.text(60, 25, "NOMBRE DE LA EMPRESA S.A.C.");
+                doc.setFont(undefined, 'normal');
+
+                doc.setFontSize(10);
+                doc.text(60, 35, "PJ. DANTE NAVA MZ. T. LT. 8 - PRADERAS DEL INKA");
+
+                doc.setFontSize(10);
+                doc.text(60, 40, "PUNO - SAN ROMÁN - JULIACA");
+
+                doc.setFontSize(10);
+                doc.text(60, 45, "Celular 951777163");
+
+                doc.setFontSize(10);
+                doc.text(60, 50, "Email ferming@gmail.com");
+
+                doc.rect(150, 20, 45, 30);
+
+                doc.setFont(undefined, 'bold');
+                doc.setFontSize(10);
+                doc.text(60, 65, "RAZÓN SOCIAL:","right");
+                doc.setFont(undefined, 'normal');
+                doc.text(61, 65, "GRUPO HNOS CONDORI S.A.C.", "left");
+
+                doc.setFont(undefined, 'bold');
+                doc.setFontSize(10);
+                doc.text(60, 70, "RUC:", "right");
+                doc.setFont(undefined, 'normal');
+                doc.text(61, 70, "20601902878", "left");
+
+                doc.setFont(undefined, 'bold');
+                doc.setFontSize(10);
+                doc.text(60, 75, "DIRECCIÓN:","right");
+                doc.setFont(undefined, 'normal');
+                doc.text(61, 75, "JR. MARIANO NUÑEZ NRO. 610 URB.CERCADO, PUNO - SAN ROMÁN - JULIACA", "left");
+
+                doc.setFont(undefined, 'bold');
+                doc.setFontSize(10);
+                doc.text(60, 80, "EMISIÓN:","right");
+                doc.setFont(undefined, 'normal');
+                doc.text(61, 80, "2022-02-2015 12:40:23", "left");
+
+                doc.setFont(undefined, 'bold');
+                doc.setFontSize(10);
+                doc.text(60, 85, "MONEDA:","right")
+                doc.setFont(undefined, 'normal');
+                doc.text(61, 85, "SOL (PEN)", "left")
+
+                doc.setFont(undefined, 'bold');
+                doc.setFontSize(10);
+                doc.text(60, 90, "FORMA DE PAGO:","right")
+                doc.setFont(undefined, 'normal');
+                doc.text(61, 90, "CONTADO", "left")
+                
+                var datos = [];
+                var nPrecioTotal = 0;
+                var nCantatidadTotal = 0;
+                var columns = ["Producto", "Precio", "Cantidad", "Descripción"];
+
+                this.productos.forEach((product) => {
+                    datos.push([product.cProducto.toString(), 
+                                product.cPrecioProd.toString(), 
+                                product.nCantidadProd.toString(),
+                                product.cDescripcion.toString()])
+                    nPrecioTotal = (nPrecioTotal + parseFloat(product.cPrecioProd.toString()));
+                    nCantatidadTotal = nCantatidadTotal + parseInt(product.nCantidadProd);
+                });
+
+                doc.autoTable(columns,datos,
+                    { margin:{ top: 100 }}
+                );
+
+                var filaTablas = (datos.length)*11.5;
+
+                doc.setFontSize(10);
+                doc.text(160, (100+filaTablas), "Precio Total","right")
+                doc.text(195, (100+filaTablas), nPrecioTotal.toString(), "right")
+
+                doc.setFontSize(10);
+                doc.text(160, (105+filaTablas), "Cantidad Total","right")
+                doc.text(195, (105+filaTablas), nCantatidadTotal.toString(), "right")
+
+                this.nNumero = nPrecioTotal;
+                this.traducir();
+
+                doc.line(15, (110+filaTablas), 195, (110+filaTablas))
+                doc.setFont(undefined, 'bold');
+                doc.setFontSize(10);
+                doc.text(25, (116+filaTablas), "SON:","right")
+                doc.setFont(undefined, 'normal');
+                doc.text(26, (116+filaTablas), this.cResultado.toString(), "left")
+                doc.line(15, (120+filaTablas), 195, (120+filaTablas))
+                var fecha = new Date();
+                doc.save('Productos' + fecha.toLocaleDateString() + '.pdf');
+            },
+            traducir() {
+                const unidades = [
+                    'cero', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve',
+                    'diez', 'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve'
+                ];
+                
+                const decenas = [
+                    '', '', 'veinte', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'
+                ];
+                const centenas = ['', 'ciento', 'doscientos', 'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos', 'ochocientos', 'novecientos'];
+
+                const partes = String(this.nNumero).split('.');
+                const parteEntera = Number(partes[0]);
+                const parteDecimal = Number(partes[1]) || 0;
+
+                function describirEntero(numero) {
+                    let descripcion = '';
+
+                    if (numero === 0) {
+                    descripcion = 'cero';
+                    } else if (numero < 20) {
+                    descripcion = unidades[numero];
+                    } else if (numero < 100) {
+                    descripcion = decenas[Math.floor(numero / 10)];
+                        if (numero % 10 !== 0) {
+                            descripcion += ' y ' + unidades[numero % 10];
+                        }
+                    }
+                    else if (numero < 1000) {
+                    descripcion = centenas[Math.floor(numero / 100)];
+                    let resto = numero % 100;
+                    if (resto !== 0) {
+                        if (resto < 20) {
+                        descripcion += ' ' + especiales[resto];
+                        } else {
+                        descripcion += ' ' + decenas[Math.floor(resto / 10)];
+                        if (resto % 10 !== 0) {
+                            descripcion += ' y ' + unidades[resto % 10];
+                        }
+                        }
+                    }
+                    }
+                    return descripcion;
+                }
+
+                const descripcionEntera = describirEntero(parteEntera);
+                const descripcionDecimal = describirEntero(parteDecimal);
+
+                let descripcionCompleta = descripcionEntera;
+                if (descripcionDecimal) {
+                    descripcionCompleta += ' punto ' + descripcionDecimal;
+                }
+
+                this.cResultado = descripcionCompleta.toUpperCase();
             }
         }
     }
