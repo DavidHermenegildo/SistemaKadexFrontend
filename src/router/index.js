@@ -6,6 +6,7 @@ import Ejemplo from '../components/Ejemplo.vue'
 import Clientes from '../components/Clientes.vue'
 import Producto from '../components/Producto.vue'
 import Proveedores from '../components/Proveedores.vue'
+import Ventas from '../components/Ventas.vue'
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,11 @@ const routes = [
     path: '/proveedores',
     name: 'proveedores',
     component: Proveedores
+  },
+  {
+    path: '/ventas',
+    name: 'ventas',
+    component: Ventas
   },
   {
     path: '/about',

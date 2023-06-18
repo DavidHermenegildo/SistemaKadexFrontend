@@ -68,7 +68,7 @@
             </template>
             <v-list-item :to="{ path: '/clientes'}">
               <v-list-item-icon>
-                <v-icon>production_quantity_limits</v-icon>
+                <v-icon>contact_emergency</v-icon>
               </v-list-item-icon>
             <v-list-item-title>Clientes</v-list-item-title>              
             </v-list-item>
@@ -77,7 +77,13 @@
                 <v-icon>production_quantity_limits</v-icon>
               </v-list-item-icon>
               <v-list-item-title>Producto</v-list-item-title>              
-            </v-list-item>            
+            </v-list-item>
+            <v-list-item :to="{ path: '/ventas'}">
+              <v-list-item-icon>
+                <v-icon>real_estate_agent</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Ventas</v-list-item-title>              
+            </v-list-item>      
           </v-list-group>
         </template>
         <template>

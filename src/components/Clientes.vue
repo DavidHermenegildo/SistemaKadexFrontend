@@ -40,8 +40,12 @@
                                     <v-text-field v-model="cNumeroTelefono" label="Teléfono">
                                     </v-text-field>
                                 </v-flex>
-                                <v-flex xs12 sm6 md6>
+                                <v-flex xs12 sm12 md12>
                                     <v-text-field v-model="cCorreoCliente" label="Email">
+                                    </v-text-field>
+                                </v-flex>
+                                <v-flex xs12 sm12 md12>
+                                    <v-text-field v-model="cDireccion" label="Dirección">
                                     </v-text-field>
                                 </v-flex>
                                 <v-flex xs12 sm12 md12 v-show="valida">
@@ -153,6 +157,7 @@
                     { text: 'Tipo Persona',     value: 'cTipoPersona',    sortable: true  },
                     { text: 'Teléfono',         value: 'cNumeroTelefono', sortable: false },
                     { text: 'Email',            value: 'cCorreoCliente',  sortable: false },
+                    { text: 'Dirección',        value: 'cDireccion',      sortable: false },
                     { text: 'Estado',           value: 'lVigente',        sortable: false } 
                 ],
                 editedIndex:        -1,
@@ -165,6 +170,7 @@
                 cDocumento:         '',
                 cNumeroTelefono:    '',
                 cCorreoCliente:     '',
+                cDireccion:         '',
                 lVigente:           '',
                 valida:             0,
                 validaMensaje:      [],
@@ -236,6 +242,7 @@
                 this.cDocumento      = '';
                 this.cNumeroTelefono = '';
                 this.cCorreoCliente  = '';
+                this.cDireccion      = '';
                 this.valida          = 0;
                 this.validaMensaje   = [];
                 this.editedIndex     = -1;
@@ -249,9 +256,9 @@
                 if(this.cDocumento.length>20){
                     this.validaMensaje.push('El documento no debe tener más de 20 caracteres.');
                 }
-                //if(this.direccion.length>70){
-                //    this.validaMensaje.push('La dirección no debe tener más de 70 caracteres.');
-                //}
+                if(this.cDireccion.length>70){
+                    this.validaMensaje.push('La dirección no debe tener más de 70 caracteres.');
+                }
                 if(this.cNumeroTelefono.length>20){
                     this.validaMensaje.push('El teléfono no debe tener más de 20 caracteres.');
                 }
@@ -280,6 +287,7 @@
                         'cDocumento'        : this.cDocumento,
                         'cNumeroTelefono'   : this.cNumeroTelefono,
                         'cCorreoCliente'    : this.cCorreoCliente,
+                        'cDireccion'        : this.cDireccion,
                         'lVigente'          : this.lVigente,
                     },configuracion)
                     .then(function(response){
@@ -299,7 +307,8 @@
                         'idTipoPersona'     : this.idTipoPersona,
                         'cDocumento'        : this.cDocumento,
                         'cNumeroTelefono'   : this.cNumeroTelefono,
-                        'cCorreoCliente'    : this.cCorreoCliente
+                        'cCorreoCliente'    : this.cCorreoCliente,
+                        'cDireccion'        : this.cDireccion
                     },configuracion)
                     .then(function(response){
                         me.limpiar();
@@ -319,6 +328,7 @@
                 this.cDocumento         = item.cDocumento;
                 this.cNumeroTelefono    = item.cNumeroTelefono;
                 this.cCorreoCliente     = item.cCorreoCliente;
+                this.cDireccion         = item.cDireccion;
                 this.lVigente           = item.lVigente
                 this.dialog             = true;
                 this.editedIndex        = 1;
