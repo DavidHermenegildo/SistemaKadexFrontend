@@ -2,88 +2,74 @@
     <v-layout align-start>
         <v-flex>
             <v-toolbar flat color="white">
-                <v-toolbar-title>Ventas</v-toolbar-title>
+                <v-toolbar-title>Consulta ventas</v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-text-field v-if="verNuevo==0" class="text-xs-center" v-model="search" append-icon="search" 
-                label="Búsqueda" single-line hide-details></v-text-field>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" v-if="verNuevo==0" @click="mostrarNuevo()" dark class="mb-2">Nuevo</v-btn>
-                <v-dialog v-model="dialog" max-width="1000px">
-                    <v-card>
-                        <v-card-title> 
-                            <span class="headline">Seleccione un producto</span>
-                        </v-card-title>            
-                        <v-card-text>
-                            <v-container grid-list-md>
-                                <v-layout wrap>
-                                    <v-flex xs12 sm12 md12 lg12 xl12>                                        
-                                        <v-text-field v-model="texto" @keyup.enter="listarProducto()" class="text-xs-center" append-icon="search" 
-                                        label="Búsqueda"></v-text-field>
-                                        <template>
-                                            <v-data-table
-                                                :headers="CabeceraProductos"
-                                                :items="Productos"
-                                                class="elevation-1"
-                                            >
-                                                <template v-slot:[`item.seleccionar`]="{ item }">
-                                                    <td>
-                                                        <v-icon
-                                                        small
-                                                        class="mr-2"
-                                                        @click="agregarDetalle(item)"
-                                                        >
-                                                        add
-                                                        </v-icon>                                                    
-                                                    </td>
-                                                </template>
-                                                <template v-slot:[`item.lVigente`]="{ item }">
-                                                    <td>
-                                                        <div v-if="item.lVigente">
-                                                            <span class="blue--text">Activo</span>
-                                                        </div>
-                                                        <div v-else>
-                                                            <span class="red--text">Inactivo</span>
-                                                        </div>
-                                                    </td> 
-                                                </template>
-                                            </v-data-table>
-                                        </template>
-                                    </v-flex>
-                                </v-layout>
-                            </v-container>
-                        </v-card-text>            
-                        <v-card-actions>
-                        <v-spacer></v-spacer>
-                            <v-btn class="mr-2" color="blue darken-1" style="color: white;" flat @click="close">Cancelar</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-                <v-dialog v-model="adModal" max-width="290">
-                    <v-card>
-                        <v-card-title class="headline" v-if="adAccion==1">
-                            Activar Item
-                        </v-card-title>
-                        <v-card-title class="headline" v-if="adAccion==2">
-                            Desactivar Item
-                        </v-card-title>
-                        <v-card-text>
-                            Estás a punto de <span v-if="adAccion==1">activar </span>
-                            <span v-if="adAccion==2">desactivar </span> el item {{adNombre}}
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn @click="activarDesactivarCerrar()" color="blue darken-1" text="text">
-                                Cancelar
-                            </v-btn>
-                            <v-btn v-if="adAccion==1" @click="activar()" color="blue darken-1" text="text">
-                                Activar
-                            </v-btn>
-                            <v-btn v-if="adAccion==2" @click="desactivar()" color="blue darken-1" text="text">
-                                Desactivar
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
+                <v-flex xs12 sm12 md2>
+                    <v-menu
+                        v-model="menu1"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        max-width="290px"
+                        min-width="auto"
+                        v-if="showDatePickers"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                                dense
+                                v-model="computedDateFormatted"
+                                persistent-hint
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                                label="Desde"
+                                prepend-icon="calendar_month" 
+                            ></v-text-field>
+                        </template>
+                        <v-date-picker
+                            v-model="dFechaIncio"
+                            no-title
+                            @input="menu1 = false"
+                            locale="es"
+                            color="primary"
+                            @click:prepend="resetFechaInicio = true"
+                        ><v-btn flat color="blue darken-1" text="text" @click="borrarFechaIncio">Borrar</v-btn></v-date-picker>
+                    </v-menu>                    
+                </v-flex>
+                <v-flex xs12 sm12 md2>
+                    <v-menu
+                        v-model="menu2"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        max-width="290px"
+                        min-width="auto"
+                        v-if="showDatePickers"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                                dense
+                                v-model="computedDateFormatted2"
+                                persistent-hint
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                                label="Hasta"
+                                prepend-icon="calendar_month"
+                            ></v-text-field>
+                        </template>
+                        <v-date-picker
+                                v-model="dFechaFin"
+                                no-title
+                                @input="menu2 = false"
+                                locale="es"
+                                color="primary"
+                        ><v-btn flat color="blue darken-1" text="text" @click="borarFechaFin">Borrar</v-btn></v-date-picker>
+                    </v-menu>                    
+                </v-flex>
+                <v-spacer></v-spacer>
+                <v-btn v-if="verNuevo==0" @click="listar" color="primary" dark class="mb-2">Buscar</v-btn>
                 <v-dialog v-model="comprobanteModal" max-width="1200px">
                     <v-card>
                         <v-card-title>
@@ -320,7 +306,6 @@
             <v-data-table
                 :headers ="headers"
                 :items   ="ventas"
-                :search  ="search"
                 class    ="elevation-1"
                 v-if="verNuevo==0"
             >
@@ -332,24 +317,6 @@
                         <v-icon small class="mr-2" @click="verIngreso(item)">
                             tab
                         </v-icon>
-                        <template v-if="item.lVigente">
-                            <v-icon
-                            small
-                            class="mr-2"
-                            @click="activarDesactivarMostrar(2, item)"
-                            >
-                            check
-                            </v-icon>
-                        </template>
-                        <template v-else>
-                            <v-icon
-                            small
-                            class="mr-2"
-                            @click="activarDesactivarMostrar(1, item)"
-                            >
-                            block
-                            </v-icon>
-                        </template>
                     </td>
                 </template>
                 <template v-slot:[`item.dFechaReg`]="{ item }">
@@ -426,18 +393,6 @@
                                 hide-default-footer
                                 class="elevation-1"
                             >
-                                <template v-slot:[`item.borrar`]="{ item }">
-                                    <td>
-                                        <v-icon
-                                        small
-                                        class="mr-2"
-                                        :disabled="!editable"
-                                        @click="eliminarDetalle(detalles, item)"
-                                        >
-                                        delete
-                                        </v-icon>
-                                    </td>
-                                </template>
                                 <template v-slot:[`item.cProducto`]="{ item }">
                                     <td class="text-xs-center">{{ item.cProducto }}</td>
                                 </template>
@@ -540,7 +495,6 @@
                 nImpuesto           : 0.18,
                 codigo              : '',
                 cabeceraDetalles:[
-                    { text: 'Borrar',           value: 'borrar',            sortable: false },
                     { text: 'Producto',         value: 'cProducto',         sortable: false },
                     { text: 'Cantidad',         value: 'nCantidad',         sortable: false },
                     { text: 'Precio',           value: 'nPrecio',           sortable: false },
@@ -587,7 +541,12 @@
                 totalPages          : 0,
                 totalItems          : 0,
                 itemsPerPage        : 10,
-                editable            : false
+                editable            : false,
+                dFechaIncio         : '',
+                dFechaFin           : '', 
+                menu1               : false,
+                menu2               : false,
+                showDatePickers     : true,
             }
         },
         mounted() {
@@ -611,6 +570,12 @@
             updateTotalPages() {
                 return Math.ceil(this.totalItems / this.itemsPerPage);
             },
+            computedDateFormatted () {
+                return this.formatDate(this.dFechaIncio)
+            }, 
+            computedDateFormatted2 () {
+                return this.formatDate(this.dFechaFin)
+            },
         },
         watch: {
             dialog (val) {
@@ -622,6 +587,10 @@
             totalItems(newValue) {
                 this.totalPages = this.updateTotalPages;
             },
+            date (val) {
+                this.dateFormatted = this.formatDate(this.dFechaIncio)
+                this.dateFormatted = this.formatDate(this.dFechaFin)
+            }
         },
         created () {
             this.listar();
@@ -629,6 +598,17 @@
             this.selectTipoComprobante();
         },
         methods: {
+            borrarFechaIncio(){
+                this.dFechaIncio = '';
+            },
+            borarFechaFin(){
+                this.dFechaFin = '';
+            },
+            formatDate (fechaX) {
+                if (!fechaX) return null
+                const [year, month, day] = fechaX.split('-')
+                return `${day}/${month}/${year}`
+            },
             imprimirFormato(){
                 var quotes = document.getElementById('factura');
                 html2canvas(quotes).then(function (canvas) {
@@ -692,18 +672,6 @@
                     console.log(error);
                 });
             },
-            buscarCodigo(){
-                let me              = this;
-                me.errorArticulo    = null;
-                let header          = {"Token" : this.$store.state.token};
-                let configuracion   = {headers : header};            
-                axios.get('Api/Producto/BuscarCodigoVenta/' + this.codigo, configuracion).then(function (response){
-                    me.agregarDetalle(response.data);
-                }).catch(function(error){
-                    me.errorArticulo='No existe el producto.';
-                });
-
-            },
             agregarDetalle(data){
                 this.errorArticulo = null;
                 if (this.encuentra(data.idProducto) == true){
@@ -732,25 +700,6 @@
                 }
                 return sw;
             },
-            eliminarDetalle(arr, item){
-                let i = arr.indexOf(item);
-                if (i!= -1){
-                    arr.splice(i, 1);
-                }
-            },
-            listarProducto(){
-                let me              = this;
-                let header          = {"Token" : this.$store.state.token};
-                let configuracion   = {headers : header};            
-                axios.get('Api/Producto/ListarVenta/' + this.texto, configuracion).then(function (response){
-                    me.Productos = response.data;
-                }).catch(function(error){
-                    console.log(error);
-                });
-            },
-            mostrarModalArticulos(){
-                this.dialog = 1;
-            },
             listarDetalles(id){
                 let me              = this;
                 let header          = {"Token" : this.$store.state.token};
@@ -770,18 +719,25 @@
                 this.nImpuesto          = item.nImpuesto;
                 this.verNuevo           = 1;
                 this.verDetalle         = 1;
+                this.showDatePickers    = false;
                 this.listarDetalles(item.idVenta);
             },
             listar(){
                 let me              = this;
                 let header          = {"Token" : this.$store.state.token};
-                let configuracion   = {headers : header};            
-                axios.get('Api/Venta/Listar', configuracion).then(function (response){
+                let configuracion   = {headers : header};
+                let url='';
+                if(!me.dFechaIncio || !me.dFechaFin){
+                    url = 'Api/Venta/Listar';
+                }
+                else{
+                    url = 'Api/Venta/ConsultaFecha/' + me.dFechaIncio + '/' + me.dFechaFin;
+                }          
+                axios.get(url, configuracion).then(function (response){
                     me.ventas = response.data;
                 }).catch(function(error){
                     console.log(error);
                 });
-
             },
             limpiar(){
                 this.idVenta            = '';
@@ -800,32 +756,7 @@
                 this.verDetalle         = 0;
                 this.idCliente          = '';
                 this.editable           = false;
-            },
-            validar(){
-                this.valida = 0;
-                this.validaMensaje = [];
-                if(!this.idCliente){
-                    this.validaMensaje.push('Seleccione un cliente.');
-                }
-                if(!this.idTipoComprobante){
-                    this.validaMensaje.push('Seleccione un tipo de comprobante.');
-                }
-                if(!this.cSerieComprobante){
-                    this.validaMensaje.push('Ingrese la serie del comprobante.');
-                }
-                if(!this.cNumComprobante){
-                    this.validaMensaje.push('Ingrese el número del comprobante.');
-                }
-                if(!this.nImpuesto || this.nImpuesto < 0 || this.nImpuesto > 1){
-                    this.validaMensaje.push('Ingrese un impuesto válido.');
-                }
-                if(this.detalles.length <= 0){
-                    this.validaMensaje.push('Ingrese al menos un producto al detalle.');
-                }
-                if (this.validaMensaje.length){
-                    this.valida=1;
-                }
-                return this.valida;
+                this.showDatePickers    = true;
             },
             mostrarNuevo(){
                 this.verNuevo = 1;
@@ -862,53 +793,6 @@
                 .catch(function(error){
                     console.log(error);
                 });
-            },
-            activarDesactivarMostrar(accion,item){
-                this.adModal    = 1;
-                this.adNombre   = item.cNumComprobante;
-                this.adId       = item.idVenta;
-                if (accion == 1){
-                    this.adAccion = 1;
-                } else if(accion == 2){
-                    this.adAccion = 2;
-                } else{
-                    this.adModal = 0;
-                }
-            },
-            activarDesactivarCerrar(){
-                this.adModal = 0;
-            },
-            activar(){
-                let me              = this;
-                let header          = {"Token" : this.$store.state.token};
-                let configuracion   = {headers : header};
-                axios.put('Api/Venta/Activar/' + this.adId, {},configuracion)
-                    .then(function(response){
-                        me.adModal  = 0;
-                        me.adAccion = 0;
-                        me.adNombre = '';
-                        me.adId     = '';
-                        me.listar();
-                    })
-                    .catch(function(error){
-                        console.log(error);
-                    });
-            },
-            desactivar(){
-                let me              = this;
-                let header          = {"Token" : this.$store.state.token};
-                let configuracion   = {headers : header};
-                axios.put('Api/Venta/Anular/' + this.adId, {},configuracion)
-                    .then(function(response){
-                        me.adModal  = 0;
-                        me.adAccion = 0;
-                        me.adNombre = '';
-                        me.adId     = '';
-                        me.listar();
-                    })
-                    .catch(function(error){
-                        console.log(error);
-                    });
             },
             close () {
                 this.dialog = false;

@@ -7,6 +7,7 @@ import Clientes from '../components/Clientes.vue'
 import Producto from '../components/Producto.vue'
 import Proveedores from '../components/Proveedores.vue'
 import Ventas from '../components/Ventas.vue'
+import ConsultaVenta from '../components/ConsultaVenta.vue'
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,11 @@ const routes = [
     path: '/ventas',
     name: 'ventas',
     component: Ventas
+  },
+  {
+    path: '/consultaventa',
+    name: 'consultaventa',
+    component: ConsultaVenta
   },
   {
     path: '/about',
